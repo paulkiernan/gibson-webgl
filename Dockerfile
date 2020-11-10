@@ -1,14 +1,12 @@
-FROM node:argon
+FROM node:lts-slim
 MAINTAINER hi@paulynomial.com
 
 RUN npm install -g gulp
 
 # Define working directory.
-RUN mkdir /gibson
 COPY . /gibson
 WORKDIR /gibson
 
-RUN rm -rf /gibson/dist
 RUN npm install
 
 RUN gulp web-prod

@@ -22,18 +22,18 @@ const BUILDING_FRAGMENT_SIZE = BUILDING_WIDTH / 4;
 const FRAGMENT_MASS = 200;
 const MAX_ROTATION = 0.5;
 
-var loadingManager = new THREE.LoadingManager(function() {
+const loadingManager = new THREE.LoadingManager(function() {
   $('span.loading').remove();
   $('#instructions').append('<a href="#" id="startButton">Play</a>');
   start();
   animate();
 });
-loadingManager.onProgress = function ( item, loaded, total ) {
-  var percentComplete = (loaded/total * 100).toFixed(2);
-  $('#instructions > #loadingBar').text( percentComplete + "%" );
-  console.log( "Loading:", item, loaded, total );
+loadingManager.onProgress = function (item, loaded, total) {
+  const percentComplete = (loaded/total * 100).toFixed(2);
+  $('#instructions > #loadingBar').text(percentComplete + "%");
+  console.log("Loading:", item, loaded, total);
 };
-var textureLoader = new THREE.TextureLoader(loadingManager);
+const textureLoader = new THREE.TextureLoader(loadingManager);
 const towerTextures = {
   dark: [
     textureLoader.load('/dist/images/towers1-1.png'),
@@ -57,8 +57,8 @@ const towerTextures = {
   ]
 }
 const towerTypes = ["dark", "light"];
-var nightSkyTexture = textureLoader.load('/dist/images/nightsky.jpg');
-var floorTexture = textureLoader.load('/dist/images/room.png');
+const nightSkyTexture = textureLoader.load('/dist/images/nightsky.jpg');
+const floorTexture = textureLoader.load('/dist/images/room.png');
 
 // Global Variable
 var container;
@@ -131,7 +131,7 @@ function placeBuildingsOnGrid(gridSizeLength, tableData) {
 
   console.log(
     "Placing buildings on " + gridSizeLength + "x" + gridSizeLength + " grid!"
-  );
+ );
 
   // Initialize the grid on which we store all info about placed buildings
   BUILDING_GRID = new Array(gridSizeLength);
@@ -151,10 +151,10 @@ function placeBuildingsOnGrid(gridSizeLength, tableData) {
     var buildingHeight = parseInt(Math.log(_tableMeta.rows) * 200);
     // Change the pivot point of the geometry to be the bottom of the
     // building instead of its center
-    _buildingGeo.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0.5, 0 ) );
+    _buildingGeo.applyMatrix(new THREE.Matrix4().makeTranslation(0, 0.5, 0));
 
     // Splice out the bottom face of the building since it's never seen
-    //_buildingGeo.faces.splice( 3, 1 );
+    //_buildingGeo.faces.splice(3, 1);
 
     // Grab a texture
     var buildingType    = _.sample(towerTypes);
@@ -173,7 +173,7 @@ function placeBuildingsOnGrid(gridSizeLength, tableData) {
         transparent: true,
         opacity: 0.9
       })
-    );
+   );
 
     // Evenly place buildings around the map
     building.position.x = x * 1000;
@@ -285,16 +285,16 @@ function blowUpBuilding(buildingObj){
             z==0 ||
             z==buildingDimensions.z-BUILDING_FRAGMENT_SIZE ||
             y==buildingDimensions.y-BUILDING_FRAGMENT_SIZE
-        ){
+       ){
           var buildingFragment = new THREE.Mesh(
             buildingFragmentGeometry,
             buildingFragmentMaterial
-          );
+         );
           buildingFragment.scale.set(
             BUILDING_FRAGMENT_SIZE,
             BUILDING_FRAGMENT_SIZE,
             BUILDING_FRAGMENT_SIZE
-          );
+         );
           buildingFragment.position.x = (buildingObj.position.x - BUILDING_WIDTH/2) + x + BUILDING_FRAGMENT_SIZE/2;
           buildingFragment.position.z = (buildingObj.position.z - BUILDING_WIDTH/2) + z + BUILDING_FRAGMENT_SIZE/2;
           buildingFragment.position.y = buildingObj.position.y + y;
@@ -306,7 +306,7 @@ function blowUpBuilding(buildingObj){
             buildingFragment.position.x,
             buildingFragment.position.y,
             buildingFragment.position.z
-          ).sub(buildingObj.position);
+         ).sub(buildingObj.position);
           BUILDING_MAP[buildingObj.id].fragments.push({
             direction: direction,
             fragment: buildingFragment
@@ -325,7 +325,7 @@ function blowUpBuilding(buildingObj){
     return element.id != buildingObj.id;
   });
   scene.remove(buildingObj);
-  delete buildingObj;
+  buildingObj = null;
 
   // Mark the building as dead
   var buildingStatus = BUILDING_MAP[buildingObj.id];
@@ -341,10 +341,10 @@ function start() {
 
   var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
 
-  if ( havePointerLock ) {
+  if (havePointerLock) {
     var element = document.body;
-    var pointerlockchange = function ( event ) {
-      if ( document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element ) {
+    var pointerlockchange = function (event) {
+      if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
         controlsEnabled = true;
         controls.enabled = true;
         blocker.style.display = 'none';
@@ -357,46 +357,46 @@ function start() {
       }
     };
 
-    var pointerlockerror = function ( event ) {
+    var pointerlockerror = function (event) {
       instructions.style.display = '';
     };
 
     // Hook pointer lock state change events
-    document.addEventListener( 'pointerlockchange', pointerlockchange, false );
-    document.addEventListener( 'mozpointerlockchange', pointerlockchange, false );
-    document.addEventListener( 'webkitpointerlockchange', pointerlockchange, false );
+    document.addEventListener('pointerlockchange', pointerlockchange, false);
+    document.addEventListener('mozpointerlockchange', pointerlockchange, false);
+    document.addEventListener('webkitpointerlockchange', pointerlockchange, false);
 
-    document.addEventListener( 'pointerlockerror', pointerlockerror, false );
-    document.addEventListener( 'mozpointerlockerror', pointerlockerror, false );
-    document.addEventListener( 'webkitpointerlockerror', pointerlockerror, false );
+    document.addEventListener('pointerlockerror', pointerlockerror, false);
+    document.addEventListener('mozpointerlockerror', pointerlockerror, false);
+    document.addEventListener('webkitpointerlockerror', pointerlockerror, false);
 
-    startButton.addEventListener( 'click', function ( event ) {
+    startButton.addEventListener('click', function (event) {
 
       instructions.style.display = 'none';
 
       // Ask the browser to lock the pointer
       element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
 
-      if ( /Firefox/i.test( navigator.userAgent ) ) {
+      if (/Firefox/i.test(navigator.userAgent)) {
 
-        var fullscreenchange = function ( event ) {
-          if ( document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element ) {
-            document.removeEventListener( 'fullscreenchange', fullscreenchange );
-            document.removeEventListener( 'mozfullscreenchange', fullscreenchange );
+        var fullscreenchange = function (event) {
+          if (document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element) {
+            document.removeEventListener('fullscreenchange', fullscreenchange);
+            document.removeEventListener('mozfullscreenchange', fullscreenchange);
             element.requestPointerLock();
           }
         };
 
-        document.addEventListener( 'fullscreenchange', fullscreenchange, false );
-        document.addEventListener( 'mozfullscreenchange', fullscreenchange, false );
+        document.addEventListener('fullscreenchange', fullscreenchange, false);
+        document.addEventListener('mozfullscreenchange', fullscreenchange, false);
         element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
         element.requestFullscreen();
-    vrEffect.setFullScreen( true );
+    vrEffect.setFullScreen(true);
 
       } else {
         element.requestPointerLock();
       }
-    }, false );
+    }, false);
 
   } else {
     instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
@@ -422,7 +422,7 @@ function start() {
 
   init();
   if (supportsWebVR) {
-    vrEffect.setFullScreen( true );
+    vrEffect.setFullScreen(true);
   }
 }
 
@@ -431,15 +431,15 @@ function urlForTable(tableName) {
 }
 
 function addDirectionalLight(x, y, z) {
-  var light = new THREE.DirectionalLight( 0xffffff, 1);
-  light.position.set( x, y, z ).normalize();
-  scene.add( light );
+  var light = new THREE.DirectionalLight(0xffffff, 1);
+  light.position.set(x, y, z).normalize();
+  scene.add(light);
 }
 
 function addPointLight(x, y, z) {
-  var light = new THREE.PointLight( 0xffffff, 1);
-  light.position.set( x, y, z ).normalize();
-  scene.add( light );
+  var light = new THREE.PointLight(0xffffff, 1);
+  light.position.set(x, y, z).normalize();
+  scene.add(light);
 }
 
 
@@ -464,13 +464,13 @@ function addFlyingSprites() {
     var box = new THREE.Mesh(
       new THREE.CubeGeometry(size, size*0.1, size*0.1),
       material
-    );
+   );
 
     box.position.set(
       _.random(-PERSPECTIVE_BOUNDARY/2, PERSPECTIVE_BOUNDARY/2),
       _.random(0, Math.max(MAX_TOWER_HEIGHT, MIN_TOWER_HEIGHT)),
       _.random(-PERSPECTIVE_BOUNDARY/2, PERSPECTIVE_BOUNDARY/2)
-    );
+   );
     //box.rotation.set(Math.random() * Math.PI * 2, Math.random() * Math.PI * 2, Math.random() * Math.PI * 2);
 
     var speedVector;
@@ -503,18 +503,18 @@ function init() {
    */
 
   // Create and append the div we'll be using for rendering everything
-  container = document.createElement( 'div' );
-  document.body.appendChild( container );
+  container = document.createElement('div');
+  document.body.appendChild(container);
 
   // Create the 3JS scene
   scene = new THREE.Scene();
 
   // Create a renderer
   console.log("Loading ThreeJS Version: " + THREE.REVISION);
-  renderer = new THREE.WebGLRenderer( { antialias: true } );
-  renderer.setPixelRatio( window.devicePixelRatio );
-  renderer.setClearColor( 0xf0f0f0 );
-  renderer.setSize( window.innerWidth, window.innerHeight );
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setClearColor(0xf0f0f0);
+  renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.sortObjects = false;
 
   // Create a mouse projector tracking vector
@@ -525,7 +525,7 @@ function init() {
   var squareGridSideSize = Math.ceil(Math.sqrt(tableData.length));
   console.log(
     "Placing buildings from " + totalTables + " tables in redshift!"
-  );
+ );
   placeBuildingsOnGrid(squareGridSideSize , tableData);
 
   // Paint the floor!
@@ -535,7 +535,7 @@ function init() {
   var geometry = new THREE.PlaneGeometry(
     (FARTHEST_BUILDING_X || FLOOR_X_DIMENSION_LENGTH),
     (FARTHEST_BUILDING_Z || FLOOR_X_DIMENSION_LENGTH)
-  );
+ );
   var floor = new THREE.Mesh(
     geometry,
     new THREE.MeshLambertMaterial({
@@ -544,7 +544,7 @@ function init() {
       transparent: true,
       opacity: 0.65
     })
-  );
+ );
   floor.position.y = -0.5;
   floor.rotation.x = - Math.PI / 2;
   floor.material.side = THREE.DoubleSide;
@@ -560,8 +560,8 @@ function init() {
   geometry.vertices.push(new THREE.Vector3(0, 0, 0));
   geometry.vertices.push(new THREE.Vector3(x, 0, 0));
   geometry.vertices.push(new THREE.Vector3(-x, 0, 0));
-  crosshair = new THREE.Line( geometry, material );
-  scene.add( crosshair );
+  crosshair = new THREE.Line(geometry, material);
+  scene.add(crosshair);
 
   // skybox
   var geometry = new THREE.SphereGeometry(20000, 60, 40);
@@ -571,7 +571,7 @@ function init() {
       value: nightSkyTexture
     }
   };
-  var material = new THREE.ShaderMaterial( {
+  var material = new THREE.ShaderMaterial({
     uniforms:       uniforms,
     vertexShader:   document.getElementById('sky-vertex').textContent,
     fragmentShader: document.getElementById('sky-fragment').textContent
@@ -585,11 +585,11 @@ function init() {
   scene.add(skyBox);
 
   // Add some light
-  var hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
-  hemiLight.color.setHSL( 0.6, 1, 0.6 );
-  hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
-  hemiLight.position.set( 0, 0, 0 );
-  scene.add( hemiLight );
+  var hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
+  hemiLight.color.setHSL(0.6, 1, 0.6);
+  hemiLight.groundColor.setHSL(0.095, 1, 0.75);
+  hemiLight.position.set(0, 0, 0);
+  scene.add(hemiLight);
 
   addFlyingSprites();
 
@@ -598,39 +598,39 @@ function init() {
     window.innerWidth / window.innerHeight,   // Camera frustum aspect ratio.
     1,                                        // Camera frustum near plane
     100000                                    // Camera frustum far plane
-  );
+ );
   camera.position.y = 10;
   camera.add(crosshair);
   raycaster = new THREE.Raycaster(
     new THREE.Vector3(),  // The origin vector where the ray casts from (we copy into this)
-    new THREE.Vector3( 0, - 1, 0 ),  // The vector that gives direction to the ray. Should be normalized.
+    new THREE.Vector3(0, - 1, 0),  // The vector that gives direction to the ray. Should be normalized.
     0,
     5000
-  );
+ );
 
-  container.appendChild( renderer.domElement );
+  container.appendChild(renderer.domElement);
 
   stats = new Stats();
   stats.domElement.style.position = 'absolute';
   stats.domElement.style.top = '0px';
-  container.appendChild( stats.domElement );
+  container.appendChild(stats.domElement);
 
-  window.addEventListener( 'resize', onWindowResize, false );
+  window.addEventListener('resize', onWindowResize, false);
 
-  document.body.addEventListener( 'keydown', onKeyDown, false);
-  document.body.addEventListener( 'keyup', onKeyUp, false);
+  document.body.addEventListener('keydown', onKeyDown, false);
+  document.body.addEventListener('keyup', onKeyUp, false);
 
-  document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+  document.addEventListener('mousedown', onDocumentMouseDown, false);
 
-  if ( supportsWebVR ) {
-    vrControls = new THREE.VRControls( camera );
-    vrEffect = new THREE.VREffect( renderer, function ( error ) {
+  if (supportsWebVR) {
+    vrControls = new THREE.VRControls(camera);
+    vrEffect = new THREE.VREffect(renderer, function (error) {
     });
   } else {
     // Add mouse controls!
-    controls = new THREE.PointerLockControls( camera );
+    controls = new THREE.PointerLockControls(camera);
     controls.getObject().position.y = 100;
-    scene.add( controls.getObject() );
+    scene.add(controls.getObject());
   }
 
   ambienceSfx = new Audio('/dist/sfx/Telegraphy_-_04_-_Monopole.mp3');
@@ -684,16 +684,16 @@ function createTextMesh(text) {
     new THREE.PlaneGeometry(
       c.width,
       c.height
-    ),
+   ),
     material
-  );
+ );
   return mesh;
 }
 
 
 // Move around
-var onKeyDown = function ( event ) {
-  switch ( event.keyCode ) {
+var onKeyDown = function (event) {
+  switch (event.keyCode) {
     case 38: // up
     case 87: // w
       moveForward = true;
@@ -719,8 +719,8 @@ var onKeyDown = function ( event ) {
   }
 };
 
-var onKeyUp = function ( event ) {
-  switch( event.keyCode ) {
+var onKeyUp = function (event) {
+  switch(event.keyCode) {
     case 38: // up
     case 87: // w
       moveForward = false;
@@ -745,17 +745,17 @@ var onKeyUp = function ( event ) {
   }
 };
 
-var onDocumentMouseDown = function ( event ) {
+var onDocumentMouseDown = function (event) {
   event.preventDefault();
 
   mouse.x = 0;
   mouse.y = 0;
 
-  bulletRaycaster.setFromCamera( mouse, camera );
+  bulletRaycaster.setFromCamera(mouse, camera);
 
-  var intersects = bulletRaycaster.intersectObjects( BUILDINGS );
+  var intersects = bulletRaycaster.intersectObjects(BUILDINGS);
 
-  if ( intersects.length > 0 ) {
+  if (intersects.length > 0) {
     for (var i = 0; i < intersects.length; i++) {
       blowUpBuilding(intersects[ i ].object);
     }
@@ -767,7 +767,7 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   if (vrEffect !== undefined)
-    vrEffect.setSize( window.innerWidth, window.innerHeight );
+    vrEffect.setSize(window.innerWidth, window.innerHeight);
 }
 
 function animate() {
@@ -776,12 +776,12 @@ function animate() {
   // TODO: we're also doing this in render, we should refactor so that
   // all position recalculations are done here
   var time = performance.now();
-  var delta = ( time - prevTime ) / 1000;
+  var delta = (time - prevTime) / 1000;
 
   // Update the position of the flying little sprites
   var bounds = PERSPECTIVE_BOUNDARY;
   for(var i = 0; i < dataPackets.length; i++){
-    dataPackets[i].obj.position.add( dataPackets[i].speed);
+    dataPackets[i].obj.position.add(dataPackets[i].speed);
     if(dataPackets[i].obj.position.x < -bounds) {
       dataPackets[i].obj.position.x = bounds;
     } else if(dataPackets[i].obj.position.x > bounds){
@@ -805,9 +805,9 @@ function animate() {
         // Make all the faces of the text meshes face the camera
         if (_buildingMeta.alive){
           if (supportsWebVR) {
-            _buildingMeta.textMesh.quaternion.copy( camera.quaternion );
+            _buildingMeta.textMesh.quaternion.copy(camera.quaternion);
           } else {
-            _buildingMeta.textMesh.lookAt( controls.getObject().position );
+            _buildingMeta.textMesh.lookAt(controls.getObject().position);
           }
 
           // Rotate the texture of the building to make it look like
@@ -815,17 +815,17 @@ function animate() {
           if (Math.random() > 0.9) {
             _buildingMeta.buildingObj.material.map = _.sample(
               towerTextures[_buildingMeta.buildingType]
-            );
+           );
             _buildingMeta.buildingObj.material.needsUpdate = true;
           }
         } else {
           // Kill the building textMesh
           if (_buildingMeta.textMesh !== undefined){
             var _msg = "DROP TABLE " + _buildingMeta.tableName + ";";
-            $('.terminal>.terminal-content').append( _msg + "<br >" );
+            $('.terminal>.terminal-content').append(_msg + "<br >");
             $('.terminal')[0].scrollTop = $('.terminal')[0].scrollHeight;
-            scene.remove( _buildingMeta.textMesh );
-            delete _buildingMeta.textMesh;
+            scene.remove(_buildingMeta.textMesh);
+            _buildingMeta.textMesh = null;
           }
         }
 
@@ -839,21 +839,21 @@ function animate() {
               Math.random() * MAX_ROTATION * 2 - MAX_ROTATION,
               Math.random() * MAX_ROTATION * 2 - MAX_ROTATION,
               Math.random() * MAX_ROTATION * 2 - MAX_ROTATION
-            );
+           );
 
             _fragContainer.direction.x -= _fragContainer.direction.x * FRAGMENT_LATERAL_RESISTANCE_COEFFICIENT * delta;
             _fragContainer.direction.z -= _fragContainer.direction.z * FRAGMENT_LATERAL_RESISTANCE_COEFFICIENT * delta;
             _fragContainer.direction.y -= 9.8 * FRAGMENT_MASS * delta;
 
-            _fragContainer.fragment.translateX( _fragContainer.direction.x * delta );
-            _fragContainer.fragment.translateY( _fragContainer.direction.y * delta );
-            _fragContainer.fragment.translateZ( _fragContainer.direction.z * delta );
+            _fragContainer.fragment.translateX(_fragContainer.direction.x * delta);
+            _fragContainer.fragment.translateY(_fragContainer.direction.y * delta);
+            _fragContainer.fragment.translateZ(_fragContainer.direction.z * delta);
 
             if (_fragContainer.fragment.position.y < 0) {
               scene.remove(_fragContainer.fragment);
-              delete _fragContainer.fragment;
-              delete _fragContainer.direction;
-              delete _fragContainer;
+              _fragContainer.fragment = null;
+              _fragContainer.direction = null;
+              _fragContainer = null;
             }
           }
 
@@ -862,7 +862,7 @@ function animate() {
     }
   }
 
-  requestAnimationFrame( animate );
+  requestAnimationFrame(animate);
   if (supportsWebVR) {
     renderVR();
   } else {
@@ -879,7 +879,7 @@ function render() {
 
   // Rotate any buildings
   TWEEN.update();
-  crosshair.position.set( 0, 0, camera.position.z );
+  crosshair.position.set(0, 0, camera.position.z);
   crosshair.translateZ(-40);
 
   // Protect against falling through the map
@@ -890,7 +890,7 @@ function render() {
   raycaster.ray.origin.copy(pos);
   raycaster.ray.origin.y -= 10;
 
-  var objectsBelow = raycaster.intersectObjects( TERRAIN );
+  var objectsBelow = raycaster.intersectObjects(TERRAIN);
   var objectDistances = [];
   for (var i=0; i < objectsBelow.length; i++) {
     objectDistances.push(objectsBelow[i].distance);
@@ -898,7 +898,7 @@ function render() {
   var isOnObject = objectDistances.some(isLessThan100);
 
   var time = performance.now();
-  var delta = ( time - prevTime ) / 1000;
+  var delta = (time - prevTime) / 1000;
 
   if (!isNaN(delta)) {
     cameraVelocity.x -= cameraVelocity.x * LATERAL_RESISTANCE_COEFFICIENT * delta;
@@ -910,91 +910,89 @@ function render() {
     skyBox.rotation.z -= delta / 200;
   }
 
-  if ( moveForward ) cameraVelocity.z -= LATERAL_MOVEMENT_SPEED * delta;
-  if ( moveBackward ) cameraVelocity.z += LATERAL_MOVEMENT_SPEED * delta;
-  if ( moveLeft ) cameraVelocity.x -= LATERAL_MOVEMENT_SPEED * delta;
-  if ( moveRight ) cameraVelocity.x += LATERAL_MOVEMENT_SPEED * delta;
-  if ( moveUp ) cameraVelocity.y += VERTICAL_MOVEMENT_SPEED * delta;
+  if (moveForward) cameraVelocity.z -= LATERAL_MOVEMENT_SPEED * delta;
+  if (moveBackward) cameraVelocity.z += LATERAL_MOVEMENT_SPEED * delta;
+  if (moveLeft) cameraVelocity.x -= LATERAL_MOVEMENT_SPEED * delta;
+  if (moveRight) cameraVelocity.x += LATERAL_MOVEMENT_SPEED * delta;
+  if (moveUp) cameraVelocity.y += VERTICAL_MOVEMENT_SPEED * delta;
 
   // Don't crash!
-  if ( isOnObject === true ) {
-    cameraVelocity.y = Math.max( 0, cameraVelocity.y );
+  if (isOnObject === true) {
+    cameraVelocity.y = Math.max(0, cameraVelocity.y);
   }
 
   // Apply translation to the camera
-  controls.getObject().translateX( cameraVelocity.x * delta );
-  controls.getObject().translateY( cameraVelocity.y * delta );
-  controls.getObject().translateZ( cameraVelocity.z * delta );
+  controls.getObject().translateX(cameraVelocity.x * delta);
+  controls.getObject().translateY(cameraVelocity.y * delta);
+  controls.getObject().translateZ(cameraVelocity.z * delta);
 
   prevTime = time;
 
-  renderer.render( scene, camera );
+  renderer.render(scene, camera);
 }
 
 function renderVR() {
-  if ( moveForward ) {
+  if (moveForward) {
     speed = FORWARD_SPEED;
-  } else if ( moveBackward ) {
+  } else if (moveBackward) {
     speed = -FORWARD_SPEED;
   } else {
     speed = 0;
   }
 
   camera.translateZ(-0.3 * speed);
-  raycaster.setFromCamera( { x: 0, y: 0 }, camera );
+  raycaster.setFromCamera({ x: 0, y: 0 }, camera);
 
-  var intersects = raycaster.intersectObjects( BUILDINGS );
+  var intersects = raycaster.intersectObjects(BUILDINGS);
 
-  if ( intersects.length > 0 ) {
+  if (intersects.length > 0) {
 
-    if ( INTERSECTED != intersects[ 0 ].object ) {
+    if (INTERSECTED != intersects[ 0 ].object) {
 
-      if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+      if (INTERSECTED) INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex)
 
       // "Blow up" the building by turning it red
-      INTERSECTED = intersects[ 0 ].object;
-      INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-      INTERSECTED.material.emissive.setHex( 0xff0000 );
+      INTERSECTED = intersects[ 0 ].object
+      INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex()
+      INTERSECTED.material.emissive.setHex(0xff0000)
 
       // Knock the buildings over!
       for (var i = 0; i < intersects.length; i++) {
-        new TWEEN.Tween( intersects[ i ].object.rotation ).to( {
+        new TWEEN.Tween(intersects[ i ].object.rotation).to({
           x: Math.random() * 2 * Math.PI,
           y: Math.random() * 2 * Math.PI,
           z: Math.random() * 2 * Math.PI
         },
-        2000 )
-        .easing( TWEEN.Easing.Elastic.Out).start();
+        2000)
+        .easing(TWEEN.Easing.Elastic.Out).start()
       }
 
     }
 
   } else {
 
-    if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+    if (INTERSECTED) INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex)
 
-    INTERSECTED = null;
+    INTERSECTED = null
 
   }
 
-  TWEEN.update();
+  TWEEN.update()
 
-  vrControls.update();
+  vrControls.update()
 
-  crosshair.quaternion.copy( camera.quaternion );
-  crosshair.position.set( 0, 0, camera.position.z );
+  crosshair.quaternion.copy(camera.quaternion)
+  crosshair.position.set(0, 0, camera.position.z)
 
-  if ( INTERSECTED ) {
-
+  if (INTERSECTED) {
     crosshair.translateZ(
-      -scene.position.distanceTo( INTERSECTED.position ) +
+      -scene.position.distanceTo(INTERSECTED.position) +
       INTERSECTED.geometry.boundingSphere.radius + 5
-    );
-
+   )
   }
   else {
-    crosshair.translateZ(-40);
+    crosshair.translateZ(-40)
   }
 
-  vrEffect.render( scene, camera );
+  vrEffect.render(scene, camera)
 }
