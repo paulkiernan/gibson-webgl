@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Gibson VR</title>
+    <style>
+      @font-face {
+        font-family: 'hackerregular';
+        src: url('dist/fonts/hacker-webfont.eot');
+        src: url('dist/fonts/hacker-webfont.eot?#iefix') format('embedded-opentype'),
+             url('dist/fonts/hacker-webfont.woff2') format('woff2'),
+             url('dist/fonts/hacker-webfont.woff') format('woff'),
+             url('dist/fonts/hacker-webfont.ttf') format('truetype'),
+             url('dist/fonts/hacker-webfont.svg#hackerregular') format('svg');
+        font-weight: normal;
+        font-style: normal;
+
+      }
+      body {
+        margin: 0;
+        background: black;
+      }
+
+      #blocker {
+
+        position: absolute;
+
+        width: 100%;
+        height: 100%;
+
+        background-color: rgba(0,0,0,0.5);
+
+      }
+      #instructions {
+        width: 100%;
+        height: 100%;
+
+        display: -webkit-box;
+        display: -moz-box;
+        display: box;
+
+        -webkit-box-orient: horizontal;
+        -moz-box-orient: horizontal;
+        box-orient: horizontal;
+
+        -webkit-box-pack: center;
+        -moz-box-pack: center;
+        box-pack: center;
+
+        -webkit-box-align: center;
+        -moz-box-align: center;
+        box-align: center;
+
+        color: #ffffff;
+        text-align: center;
+
+        cursor: pointer;
+
+        font-family: hackerregular;
+    }
+
+    .terminal {
+
+        position: fixed;
+        bottom: 0px;
+        right: 0px;
+        background-color: rgba(0,0,0,0.5);
+
+        width: 30%;
+        height: 30%;
+        overflow: auto;
+
+        display: -webkit-box;
+        display: -moz-box;
+        display: box;
+
+        -webkit-box-orient: horizontal;
+        -moz-box-orient: horizontal;
+        box-orient: horizontal;
+
+        -webkit-box-pack: left;
+        -moz-box-pack: left;
+        box-pack: left;
+
+        -webkit-box-align: start;
+        -moz-box-align: start;
+        box-align: start;
+
+        color: #ffffff;
+        text-align: left;
+
+        font-family: hackerregular;
+        font-size: 12px;
+    }
+    .terminal .terminal-content {
+        position: absolute;
+        overflow:auto;
+        margin:15px 15px 15px 15px;
+    }
+
+    #startButton {
+        -moz-box-shadow: 0px 10px 14px -7px #276873;
+        -webkit-box-shadow: 0px 10px 14px -7px #276873;
+        box-shadow: 0px 10px 14px -7px #276873;
+        background-color:#599bb3;
+        -moz-border-radius:8px;
+        -webkit-border-radius:8px;
+        border-radius:8px;
+        display:inline-block;
+        cursor:pointer;
+        color:#ffffff;
+        font-family:hackerregular;
+        font-size:20px;
+        font-weight:bold;
+        padding:13px 32px;
+        text-decoration:none;
+        text-shadow:0px 1px 0px #3d768a;
+    }
+    #startButton:hover {
+        background-color:#408c99;
+    }
+    #startButton:active {
+        position:relative;
+        top:1px;
+    }
+
+    </style>
+    <script type="application/x-glsl" id="sky-vertex">
+      varying vec2 vUV;
+
+      void main() {
+        vUV = uv;
+        vec4 pos = vec4(position, 1.0);
+        gl_Position = projectionMatrix * modelViewMatrix * pos;
+      }
+    </script>
+
+    <script type="application/x-glsl" id="sky-fragment">
+      uniform sampler2D texture;
+      varying vec2 vUV;
+
+      void main() {
+        vec4 sample = texture2D(texture, vUV);
+        gl_FragColor = vec4(sample.xyz, sample.w);
+      }
+    </script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-41647925-3', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+
+  </head>
+  <body>
+
+    <div id="blocker">
+      <div id="instructions">
+        <span style="font-size:50px; color: tomato;">============================</span><br \>
+        <span style="font-size:50px; color: tomato; padding-right: 20px;">=</span>
+        <span style="font-size:50px;">Gibson Version 2.3.1</span>
+        <span style="font-size:50px; color: tomato; padding-left: 20px;">=</span><br \>
+        <span style="font-size:50px; color: tomato;">============================</span><br \>
+        <br />
+        <br />
+        <span style="font-size:34px; color: orange;">------------</span><br \>
+        <span style="font-size:30px; color: orange;">|  Controls  |</span><br \>
+        <span style="font-size:34px; color: orange;">------------</span><br \>
+            (W, A, S, D) / Arrow Keys = Move <br />
+            MOUSE / Oculus = Look<br />
+            Space = Jetpack<br />
+            Click = Shoot<br />
+        <br />
+        <br />
+        <span style="font-size:33px; color: lightpink;">-----------</span><br \>
+        <span style="font-size:30px; color: lightpink;">| Options |</span><br \>
+        <span style="font-size:33px; color: lightpink; padding-left: 9px;">-----------</span>
+        <br />
+
+        Enable soundtrack: <input type="checkbox" id="enable-sound" checked/>
+        <br />
+        Enable sound effects: <input type="checkbox" id="enable-sfx" checked/>
+        <br />
+        <br />
+        <br />
+        <br />
+        <span class="loading" style="font-size:30px; color: orangered;">Loading: </span>
+        <span class="loading" id="loadingBar" style="font-size:30px;">0.00%</span>
+      </div>
+    </div>
+
+    <div class="terminal">
+      <div class="terminal-content">
+      </div>
+    </div>
+
+
+
+    <!-- javascript dependencies -->
+    <script src="/dist/gibson-deps.min.js"></script>
+
+    <!-- gibson application -->
+    <script src="/dist/gibson.min.js"></script>
+  </body>
+</html>

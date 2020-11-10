@@ -1,0 +1,55 @@
+{
+  "name": "gibson",
+  "version": "1.0.0",
+  "description": "Hack the Gibson",
+  "main": "app/app.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "plato": "plato -r -d report src\\game\\js"
+  },
+  "author": "Paul Kiernan <paul@paulynomial.com>",
+  "contributers": [
+      {
+          "name": "Paul Kiernan",
+          "email": "gibson@paulynomial.com",
+          "url": "paulynomial.com"
+      },
+      {
+          "name": "Matt Owen",
+          "email": "matt.owen@chartbeat.com"
+      },
+      {
+          "name": "Anastasis Germanidis",
+          "email": "anastasis@chartbeat.com"
+      }
+  ],
+  "dependencies": {
+    "express": "^4.13.3",
+    "express-json": "^1.0.0",
+    "pg": "^4.4.3",
+    "q": "^1.4.1",
+    "rc": "^1.1.2",
+    "sprintf": "^0.1.5",
+    "sprintf-js": "^1.0.3",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "archiver": "^0.21.0",
+    "del": "^2.2.0",
+    "gulp": "^3.9.0",
+    "gulp-concat-util": "^0.5.4",
+    "gulp-if": "^2.0.0",
+    "gulp-insert": "^0.5.0",
+    "gulp-preprocess": "^2.0.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.5.1",
+    "gulp-util": "^3.0.7",
+    "require-dir": "^0.3.0",
+    "run-sequence": "^1.1.5"
+  },
+  "preferGlobal": false,
+  "private": true,
+  "analyze": true,
+  "license": "MIT"
+}
