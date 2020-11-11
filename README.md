@@ -1,5 +1,7 @@
 # Chartbeat Hackweek 31 -- Project Gibson
 
+![Super-Linter](https://github.com/paulkiernan/gibson-webgl/workflows/Super-Linter/badge.svg)
+
 Archive of Code from 2015 Hackweek @ [Chartbeat](https://github.com/chartbeat)
 
 Updated to use more recent versions of Node and deps since all the ones I used
