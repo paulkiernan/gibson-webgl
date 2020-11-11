@@ -8,4 +8,5 @@ docker build -t gibson-webgl:latest "$REPO_ROOT_DIR"
 
 docker run \
     --rm \
-    -t gibson-webgl:latest
+    -p 8080:8080 \
+    -it gibson-webgl:latest

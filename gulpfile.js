@@ -60,7 +60,6 @@ function jsClient () {
     ].join('\n')))
     .pipe(gulpif(global.production, uglify({
       mangle: false,
-      preserveComments: 'license'
     }).on('error', log)))
     .pipe(gulp.dest(global.distFolder))
 }

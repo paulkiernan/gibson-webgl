@@ -2,6 +2,9 @@
 
 Archive of Code from 2015 Hackweek @ [Chartbeat](https://github.com/chartbeat)
 
+Updated to use more recent versions of Node and deps since all the ones I used
+originally have been deprecated. Fair warning: I am not a Javascript Developer!
+
 ```bash
 ./scripts/run.sh
 ```

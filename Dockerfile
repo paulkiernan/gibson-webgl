@@ -1,15 +1,15 @@
 FROM node:lts-slim
 MAINTAINER hi@paulynomial.com
 
-RUN npm install -g gulp
-
-# Define working directory.
-COPY . /gibson
 WORKDIR /gibson
 
+RUN npm install -g gulp
+COPY package.json .
 RUN npm install
 
-RUN gulp web-prod
+COPY . /gibson
+
+RUN gulp buildProd
 
 ENV HOSTNAME 0.0.0.0
 ENV port 8080
