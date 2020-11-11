@@ -31,7 +31,7 @@ other initiates of the hackerverse (Matt Owen and Anastasis Germanidis) came
 together over the past hackweek at Chartbeat to make the original Gibson
 interface a reality and perhaps even bring it to the Oculus Rift.
 
-![Hackers](/blog/assets/images/hackers-poster.jpg)
+![Hackers](media/hackers-poster.jpg)
 
 We began by investigating the Oculus Rift SDK and frameworks we could use to
 include an [existing C++ project][existing-project] that emulated the Gibson
@@ -57,19 +57,17 @@ security reasons).
 
 
 #### 2D Gibson:
-<iframe width="420" height="315" src="https://www.youtube.com/embed/t5PbktJ8YBU" frameborder="0" allowfullscreen></iframe>
-https://youtu.be/t5PbktJ8YBU
+[![Hackers](media/standard-screenshot.jpg)](https://youtu.be/t5PbktJ8YBU)
 
 #### 3D Gibson (via Oculus):
-<iframe width="560" height="315" src="https://www.youtube.com/embed/UCUC2aIroJI" frameborder="0" allowfullscreen></iframe>
-https://youtu.be/UCUC2aIroJI
+[![Hackers](media/oculus-screenshot.jpg)](https://youtu.be/UCUC2aIroJI)
 
 The Gibson project can be hooked up to any Redshift cluster or general postgres
 database so let us know if you’d be interested in playing around with it!
 
 Hack the planet!
 
-![Hack the Planet!](/blog/assets/images/hackers.gif)
+![Hack the Planet!](media/hackers.gif)
 
 
 [hackers-wikipedia]: https://en.wikipedia.org/wiki/Hackers_(film)
