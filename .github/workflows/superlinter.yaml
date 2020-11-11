@@ -12,12 +12,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+
+
       - name: Run Super-Linter
         uses: github/super-linter@v3
         env:
           DEFAULT_BRANCH: main
-          FILTER_REGEX_EXCLUDE: userdata_quickstart_node.template|userdata_rancher_server.template
+          FILTER_REGEX_EXCLUDE: src/deps/.*|src/game/assets/fonts/helvetiker_regular.typeface.js|src/game/assets/fonts/helvetiker_bold.typeface.js|src/common/VREffect.js|src/common/VRControls.js|src/common/PointerLockControls.js
           OUTPUT_DETAILS: detailed
           VALIDATE_ALL_CODEBASE: true
-          VALIDATE_LATEX: true
+          VALIDATE_JAVASCRIPT_STANDARD: true
+          VALIDATE_JSON: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
