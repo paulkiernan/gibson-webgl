@@ -40,6 +40,12 @@ function copySfx () {
     .pipe(gulp.dest(path.join(global.distFolder + '/sfx')))
 }
 
+function copyData () {
+  return gulp
+    .src(['./data/*'])
+    .pipe(gulp.dest(path.join(global.distFolder + '/data')))
+}
+
 function jsClient () {
   const list = [
     './src/common/Base.js',
@@ -89,7 +95,7 @@ function jsVendor () {
 
 function webDebug (cb) {
   global.production = false
-  return gulp.watch()
+  return cb()
 }
 
 function webProd (cb) {
@@ -98,18 +104,35 @@ function webProd (cb) {
 }
 
 /* Big Boy Build */
-const build = gulp.series(
+const buildDev = gulp.series(
   clean,
   gulp.parallel(
     copyHtml,
     copyFonts,
     copyImages,
-    copySfx
+    copySfx,
+    copyData
   ),
+  webDebug,
   jsClient,
   jsVendor,
-  webProd
+)
+
+const buildProd = gulp.series(
+  clean,
+  gulp.parallel(
+    copyHtml,
+    copyFonts,
+    copyImages,
+    copySfx,
+    copyData
+  ),
+  webProd,
+  jsClient,
+  jsVendor,
 )
 
 exports.clean = clean
-exports.build = build
+exports.buildDev = buildDev
+exports.buildProd = buildProd
+exports.default = buildProd

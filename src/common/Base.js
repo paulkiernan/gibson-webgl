@@ -108,7 +108,7 @@ var skyBox ;
 // gonna draw
 console.log("Pulling metadata about redshift tables...");
 $.getJSON(
-  "http://" + location.host + "/gibson/static/tables",
+  "http://" + location.host + "/static/tables",
   function(data) {
     console.log("Successfully received data from redshift");
     tableData = data.data;
@@ -825,7 +825,7 @@ function animate() {
             $('.terminal>.terminal-content').append(_msg + "<br >");
             $('.terminal')[0].scrollTop = $('.terminal')[0].scrollHeight;
             scene.remove(_buildingMeta.textMesh);
-            _buildingMeta.textMesh = null;
+            delete _buildingMeta.textMesh;
           }
         }
 
@@ -851,9 +851,9 @@ function animate() {
 
             if (_fragContainer.fragment.position.y < 0) {
               scene.remove(_fragContainer.fragment);
-              _fragContainer.fragment = null;
-              _fragContainer.direction = null;
-              _fragContainer = null;
+              delete _fragContainer.fragment;
+              delete _fragContainer.direction;
+              delete _fragContainer;
             }
           }
 
