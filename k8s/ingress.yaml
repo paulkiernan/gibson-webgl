@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    field.cattle.io/description: Ingress Gibson webgl demo
+  name: gibson-webgl-ingress
+  namespace: gibson-webgl
+spec:
+  rules:
+  - host: gibson.paulynomial.com
+    http:
+      paths:
+      - backend:
+          serviceName: gibson-webgl-service
+          servicePort: 8080
+        path: /
+        pathType: Prefix
