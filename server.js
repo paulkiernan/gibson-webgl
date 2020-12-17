@@ -62,6 +62,10 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, '/dist/index.html'))
 })
 
+app.get('/healthz', function (req, res) {
+  res.sendStatus(200)
+})
+
 /**
  * Wrapper for returning results from SQL
  */

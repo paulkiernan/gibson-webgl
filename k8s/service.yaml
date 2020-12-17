@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: gibson-webgl-service
+spec:
+  selector:
+    app: gibson-webgl
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
