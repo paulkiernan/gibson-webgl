@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: gibson-webgl
-        image: paulynomial/gibson-webgl:latest
+        image: ghcr.io/paulkiernan/gibson-webgl:1.0.0
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
