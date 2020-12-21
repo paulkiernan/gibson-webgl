@@ -1,6 +1,8 @@
 FROM node:lts-slim
 MAINTAINER hi@paulynomial.com
 
+LABEL org.opencontainers.image.source=https://github.com/paulkiernan/gibson-webgl
+
 WORKDIR /gibson
 
 RUN npm install -g gulp
