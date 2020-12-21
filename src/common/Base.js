@@ -108,7 +108,7 @@ var skyBox ;
 // gonna draw
 console.log("Pulling metadata about redshift tables...");
 $.getJSON(
-  "http://" + location.host + "/static/tables",
+  "https://" + location.host + "/static/tables",
   function(data) {
     console.log("Successfully received data from redshift");
     tableData = data.data;

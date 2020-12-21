@@ -148,7 +148,7 @@ app.get('/static/tables', function (req, res) {
 })
 
 console.log(
-  'Server exposing %s listening at http://%s:%s',
+  'Server exposing %s listening at %s:%s',
   buildDir,
   hostname,
   port
