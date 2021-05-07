@@ -31,7 +31,7 @@
     "q": "^1.5.1",
     "rc": "^1.2.8",
     "sprintf-js": "^1.1.2",
-    "underscore": "^1.11.0"
+    "underscore": "^1.12.1"
   },
   "devDependencies": {
     "archiver": "^5.0.2",
